@@ -1,0 +1,98 @@
+---
+title: "Marketing Data Manual"
+author: "Carlos M, Mario A, Kripa F"
+date: "1/8/2020"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+This marketing data manual is meant for marketing analysts. In this manual, we have included customer profiling, key marketing and loyalty metrics.
+
+These datasets used for this manual come from the collaborative Internet gambling research project between the Division on Addictions (DOA) and bwin Interactive Entertainment, AG (bwin), an Internet betting service provider headquartered in Vienna, Austria.
+
+These datasets provide evidence from the first eight months of the first prospective longitudinal, real-time, Internet sports betting behavior study that took place from February 1, 2005 through September 30, 2005. The analytic dataset contains information representing eight months of aggregated betting behavior data for sequential bwin Internet sports subscribers who opened an account with bwin during the period from February 1, 2005 through February 27, 2005. 
+
+The DataMart is structure to provide information on the players based on the demographics, gambling alternatives, and results of such games. The variables are the following:
+
+```{r echo=FALSE, message=FALSE}
+datamart <- read.csv(file = "C:\\Users\\kfernandes\\Desktop\\Kripa Fernandes\\R Group Project\\mdatamart.csv", header=TRUE)
+print(names(datamart))
+```
+
+**User profile:**
+
+```{r echo=FALSE, message=FALSE}
+datamart['Age'][is.na(datamart['Age'])] <- 0
+m <- trunc(mean(datamart$Age))
+cat("The average age of the customer is: ", m)
+u <- nrow(datamart)
+cat("The total number of customers are: ", u)
+g <- trunc((length(which(datamart['Gender'] == 1))/nrow(datamart))*100)
+cat("The percentage of male customers to the total customers is: ", g, "%")
+s <- mean(as.numeric(unlist(datamart['Total.Expenditure'])),na.rm=TRUE)
+cat("The average expenditure is: ", s, " euros")
+b <- trunc(sum(datamart['Total.no..of.bets'], na.rm=TRUE)/nrow(datamart))
+cat("The average number of bets is: ", b)
+```
+
+**Overall marketing metrics:**
+
+```{r echo=FALSE, message=FALSE}
+x <- sum(datamart['Total.Expenditure'])
+cat("The total revenue is: ", x, "euros")
+y <- sum(datamart['Total.no..of.bets'], na.rm=TRUE)
+cat("The total number of bets placed is: ", y)
+z <- trunc(sum(datamart['Profitability'], na.rm=TRUE)/nrow(datamart))
+cat("The average Profitability Per Order (PPO) is", z, "euros.", "\n", "Profitability per order (PPO): (Total Revenue - Total Winnings) / Total no. of bets", "\n", "Profitability per order (PPO) per customer is reflected in the 'Profitability' column in the datamart.")
+```
+
+**Customer loyalty metrics:**
+
+```{r echo=FALSE, message=FALSE}
+cat("The datamart has a column called Average Order Value.", "\n", "Average Order Value (AOV): Total Revenue / Total no. of Bets")
+repeat_customers <- trunc(length(which(datamart['Total.no..of.bets'] > 36)))
+RepeatBetRate = trunc(((repeat_customers/nrow(datamart))*100))
+cat("Repeat Bet Rate (RBP): ", RepeatBetRate, "%.", "\n","Repeat Bet Rate (RBP): No. of customers who have bet more than once / Total no. of customers. in percentage.", "\n", "A loyal customer bets more than 36 times a year.")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
